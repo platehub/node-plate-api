@@ -8,6 +8,11 @@
   },
   "author": "David Kortleven",
   "license": "ISC",
+  "homepage": "https://github.com/platehub/node-plate-api",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/platehub/node-plate-api"
+  },
   "dependencies": {
     "got": "^9.6.0",
     "request": "^2.88.0",
