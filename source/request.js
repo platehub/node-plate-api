@@ -18,45 +18,71 @@ function Request(method, url, parameters, connector, success_callback, error_cal
   }
 }
 
-// Execute request
+/**
+ * Execute the request
+ * @return {Undefined} Undefined
+ */
 Request.prototype.execute = function(){
   var date_string = new Date().toUTCString();
+  var authentication_hash = this.sign_string(this.string_to_sign());
+  var options = this.request_options(date_string, authentication_hash)
 
-  var string_to_sign = this.method + "\n"
-    + this.parsed_url.host + "\n"
-    + this.parsed_url.pathname + "\n"
-    + this.parsed_url.searchParams + "\n"
-    + date_string;
+  var response = got(this.parsed_url.href, options).then(this.success_callback, this.error_callback);
+}
 
-  console.log("String to sign: \n" + string_to_sign);
-
-  var hmac = crypto.createHmac('sha512', this.secret_key)
-                   .update(string_to_sign)
-                   .digest('base64');
-  console.log(this.post_params)
-
+/**
+ * Return the options for Got
+ * @param  {String} date_string         The string for the Date header
+ * @param  {String} authentication_hash The hash for the Authorization header
+ * @return {Object}                     An object with all the options
+ */
+Request.prototype.request_options = function (date_string, authentication_hash) {
   var request_options = {
     method: this.method,
     headers: {
       'Date': date_string,
-      'Authorization': "hmac " + this.public_key +":" + hmac
+      'Authorization': "hmac " + this.public_key +":" + authentication_hash
     },
     json: true,
     body: this.post_params
   };
+};
 
-  console.log("Using options: " + request_options.headers['Authorization']);
-  console.log("Using url: " + this.parsed_url.href);
-
-  var response = got(this.parsed_url.href, request_options).then(this.success_callback, this.error_callback);
-}
-
-// Set params
+/**
+ * Set the GET parameters in the url.
+ * @param  {Object} params The parameters to set
+ */
 Request.prototype.set_get_params = function(params){
   for(key in params){
     this.parsed_url.searchParams.set(key, params[key]);
   }
   this.parsed_url.searchParams.sort();
+}
+
+/**
+ * Setup the string to sign for the Authorization header
+ * @param  {String} date_string The string representation of the Date header that is going to be used
+ * @return {String}             The string to sign for the Authorization header
+ */
+Request.prototype.string_to_sign = function(date_string){
+  var string_to_sign = this.method + "\n"
+    + this.parsed_url.host + "\n"
+    + this.parsed_url.pathname + "\n"
+    + this.parsed_url.searchParams + "\n"
+    + date_string;
+  return string_to_sign;
+}
+
+/**
+ * Sign a string for the Authorization header, using the secret_key.
+ * @param  {String} string_to_sign The string that is going to be hashed
+ * @return {String}                The resulting hash
+ */
+Request.prototype.sign_string = function(string_to_sign){
+  var hash = crypto.createHmac('sha512', this.secret_key)
+                   .update(string_to_sign)
+                   .digest('base64');
+  return hash;
 }
 
 module.exports = Request
