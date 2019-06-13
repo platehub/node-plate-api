@@ -1,6 +1,6 @@
 {
   "name": "plate-api",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "A connector to the Plate API. It takes care of the authentication procedure. It also provides a basic wrapper around the Plate API, so objects in Plate can be manipulated as local objects.",
   "main": "app.js",
   "scripts": {
@@ -13,6 +13,9 @@
     "type": "git",
     "url": "https://github.com/platehub/node-plate-api"
   },
+ "engines" : {
+   "node" : ">=8.0.0"
+ },
   "dependencies": {
     "got": "^9.6.0",
     "url": "^0.11.0"

@@ -1,6 +1,7 @@
 # Plate API
 
 [![npm version](https://badge.fury.io/js/plate-api.svg)](https://badge.fury.io/js/plate-api)
+[![Build Status](https://travis-ci.com/platehub/node-plate-api.svg?branch=master)](https://travis-ci.com/platehub/node-plate-api)
 
 Welcome to the Node Plate Api package for Node.js
 
