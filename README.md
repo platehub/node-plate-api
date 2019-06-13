@@ -2,6 +2,7 @@
 
 [![npm version](https://badge.fury.io/js/plate-api.svg)](https://badge.fury.io/js/plate-api)
 [![Build Status](https://travis-ci.com/platehub/node-plate-api.svg?branch=master)](https://travis-ci.com/platehub/node-plate-api)
+[![install size](https://packagephobia.now.sh/badge?p=plate-api)](https://packagephobia.now.sh/result?p=plate-api)
 
 Welcome to the Node Plate Api package for Node.js
 
@@ -25,7 +26,7 @@ To make a request:
 
 ```javascript
 plate_api.send_request(
-  "GET",
+  "POST",
   "/site_translations/471/posts",
   {
     content_type_id: 11373,
