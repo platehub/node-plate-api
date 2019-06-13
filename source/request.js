@@ -2,11 +2,9 @@ const URL = require('url').URL;
 const crypto = require('crypto');
 const got = require('got');
 
-function Request(method, url, parameters, connector, success_callback, error_callback){
+function Request(method, url, parameters, connector){
   this.method = method.toUpperCase();
   this.parsed_url = new URL(url);
-  this.error_callback = error_callback;
-  this.success_callback = success_callback;
   this.public_key = connector.public_key;
   this.secret_key = connector.secret_key;
   if(this.method == "GET"){
@@ -27,7 +25,8 @@ Request.prototype.execute = function(){
   var authentication_hash = this.sign_string(this.string_to_sign());
   var options = this.request_options(date_string, authentication_hash)
 
-  var response = got(this.parsed_url.href, options).then(this.success_callback, this.error_callback);
+  var response_promise = got(this.parsed_url.href, options);
+  return response_promise
 }
 
 /**

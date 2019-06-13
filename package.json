@@ -4,7 +4,7 @@
   "description": "A connector to the Plate API. It takes care of the authentication procedure. It also provides a basic wrapper around the Plate API, so objects in Plate can be manipulated as local objects.",
   "main": "app.js",
   "scripts": {
-    "test": "mocha"
+    "test": "nyc mocha"
   },
   "author": "David Kortleven",
   "license": "ISC",
@@ -19,6 +19,8 @@
   },
   "devDependencies": {
     "chai": "^4.2.0",
-    "mocha": "^6.1.4"
+    "mocha": "^6.1.4",
+    "nock": "^10.0.6",
+    "nyc": "^14.1.1"
   }
 }
