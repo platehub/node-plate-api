@@ -59,8 +59,8 @@ describe('Request', function () {
   });
 
   describe('#execute', function(){
-    it('calls the url async', async function(){
-      const scope = nock('https://www.someurl.com').log(console.log)
+    it('calls the url', async function(){
+      const scope = nock('https://www.someurl.com')
       .get('/api/some/path')
       .reply(200, {
         data: {
