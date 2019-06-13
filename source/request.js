@@ -84,4 +84,4 @@ Request.prototype.sign_string = function(string_to_sign){
   return hash;
 }
 
-module.exports = Request
+module.exports = {GetRequest: Request, PostRequest: PostRequest} 
