@@ -7,7 +7,7 @@ function Request(method, url, parameters, connector){
   this.parsedUrl = new URL(url);
   this.publicKey = connector.publicKey;
   this.secretKey = connector.secretKey;
-  if(this.method == "GET"){
+  if(this.method == 'GET'){
     this.setGetParams(parameters);
   }else{
     this.postParams = {
@@ -21,10 +21,10 @@ function Request(method, url, parameters, connector){
  * @return {Undefined} Undefined
  */
 Request.prototype.execute = function(){
-  var dateString = new Date().toUTCString();
-  var authenticationHash = this.signString(this.stringToSign());
-  var options = this.requestOptions(dateString, authenticationHash)
+  var dateString = Date.toUTCString();
 
+  var authenticationHash = this.signString(this.stringToSign(dateString));
+  var options = this.requestOptions(dateString, authenticationHash)
   var responsePromise = got(this.parsedUrl.href, options);
   return responsePromise
 }
@@ -40,11 +40,12 @@ Request.prototype.requestOptions = function (dateString, authenticationHash) {
     method: this.method,
     headers: {
       'Date': dateString,
-      'Authorization': "hmac " + this.publicKey +":" + authenticationHash
+      'Authorization': 'hmac ' + this.publicKey +':' + authenticationHash
     },
     json: true,
     body: this.postParams
   };
+  return requestOptions;
 };
 
 /**
@@ -64,10 +65,10 @@ Request.prototype.setGetParams = function(params){
  * @return {String}             The string to sign for the Authorization header
  */
 Request.prototype.stringToSign = function(dateString){
-  var stringToSign = this.method + "\n"
-    + this.parsedUrl.host + "\n"
-    + this.parsedUrl.pathname + "\n"
-    + this.parsedUrl.searchParams + "\n"
+  var stringToSign = this.method + '\n'
+    + this.parsedUrl.hostname + '\n'
+    + this.parsedUrl.pathname + '\n'
+    + this.parsedUrl.searchParams + '\n'
     + dateString;
   return stringToSign;
 }

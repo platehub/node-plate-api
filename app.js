@@ -1,4 +1,4 @@
-connector = require("./source/connector")
+connector = require('./source/connector')
 
 
 module.exports = connector

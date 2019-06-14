@@ -16,16 +16,16 @@ npm install --save plate-api
 To initialize an instance of the PlateAPI:
 
 ```javascript
-PlateApi = require("./app.js");
+PlateApi = require("plate-api");
 
 // Replace 'publickey' and 'secretkey' with the keys of your API integration.
-plate_api = new PlateApi("publickey", "secretkey")
+plateApi = new PlateApi("publickey", "secretkey")
 ```
 
 To make a request:
 
 ```javascript
-plate_api.sendRequest(
+plateApi.sendRequest(
   "POST",
   "/site_translations/471/posts",
   {

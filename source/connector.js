@@ -1,4 +1,4 @@
-Request = require("./request");
+Request = require('./request');
 
 function Connector(publicKey, secretKey, serverBase){
   if(!publicKey || !secretKey){
@@ -7,7 +7,7 @@ function Connector(publicKey, secretKey, serverBase){
 
   this.publicKey = publicKey;
   this.secretKey = secretKey;
-  this.serverBase = serverBase || "https://www.startwithplate.com/api/v2";
+  this.serverBase = serverBase || 'https://www.startwithplate.com/api/v2';
 }
 
 /**
