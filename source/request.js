@@ -21,7 +21,7 @@ function Request(method, url, parameters, connector){
  * @return {Undefined} Undefined
  */
 Request.prototype.execute = function(){
-  var dateString = Date.toUTCString();
+  var dateString = new Date().toUTCString();
 
   var authenticationHash = this.signString(this.stringToSign(dateString));
   var options = this.requestOptions(dateString, authenticationHash)

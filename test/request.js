@@ -2,6 +2,7 @@ const Request = require('../source/request.js');
 const Connector = require('../source/connector.js');
 const expect = require('chai').expect;
 const nock = require('nock')
+const MockDate = require('mockdate');
 
 
 describe('Request', function () {
@@ -60,14 +61,11 @@ describe('Request', function () {
 
   describe('#execute', function(){
     beforeEach(function(){
-      orignalDateToUTCString = Date.toUTCString
-      Date.toUTCString = function () {
-        return 'Sun, 06 Nov 1994 08:49:37 GMT';
-      }
+      MockDate.set('Sun, 06 Nov 1994 08:49:37 GMT');
     });
 
     afterEach(function(){
-      Date.toUTCString = orignalDateToUTCString;
+      MockDate.reset();
     });
 
 
