@@ -4,13 +4,13 @@ const got = require('got');
 
 function Request(method, url, parameters, connector){
   this.method = method.toUpperCase();
-  this.parsed_url = new URL(url);
-  this.public_key = connector.public_key;
-  this.secret_key = connector.secret_key;
+  this.parsedUrl = new URL(url);
+  this.publicKey = connector.publicKey;
+  this.secretKey = connector.secretKey;
   if(this.method == "GET"){
-    this.set_get_params(parameters);
+    this.setGetParams(parameters);
   }else{
-    this.post_params = {
+    this.postParams = {
       'data': parameters
     }
   }
@@ -21,29 +21,29 @@ function Request(method, url, parameters, connector){
  * @return {Undefined} Undefined
  */
 Request.prototype.execute = function(){
-  var date_string = new Date().toUTCString();
-  var authentication_hash = this.sign_string(this.string_to_sign());
-  var options = this.request_options(date_string, authentication_hash)
+  var dateString = new Date().toUTCString();
+  var authenticationHash = this.signString(this.stringToSign());
+  var options = this.requestOptions(dateString, authenticationHash)
 
-  var response_promise = got(this.parsed_url.href, options);
-  return response_promise
+  var responsePromise = got(this.parsedUrl.href, options);
+  return responsePromise
 }
 
 /**
  * Return the options for Got
- * @param  {String} date_string         The string for the Date header
- * @param  {String} authentication_hash The hash for the Authorization header
+ * @param  {String} dateString         The string for the Date header
+ * @param  {String} authenticationHash The hash for the Authorization header
  * @return {Object}                     An object with all the options
  */
-Request.prototype.request_options = function (date_string, authentication_hash) {
-  var request_options = {
+Request.prototype.requestOptions = function (dateString, authenticationHash) {
+  var requestOptions = {
     method: this.method,
     headers: {
-      'Date': date_string,
-      'Authorization': "hmac " + this.public_key +":" + authentication_hash
+      'Date': dateString,
+      'Authorization': "hmac " + this.publicKey +":" + authenticationHash
     },
     json: true,
-    body: this.post_params
+    body: this.postParams
   };
 };
 
@@ -51,37 +51,37 @@ Request.prototype.request_options = function (date_string, authentication_hash) 
  * Set the GET parameters in the url.
  * @param  {Object} params The parameters to set
  */
-Request.prototype.set_get_params = function(params){
+Request.prototype.setGetParams = function(params){
   for(key in params){
-    this.parsed_url.searchParams.set(key, params[key]);
+    this.parsedUrl.searchParams.set(key, params[key]);
   }
-  this.parsed_url.searchParams.sort();
+  this.parsedUrl.searchParams.sort();
 }
 
 /**
  * Setup the string to sign for the Authorization header
- * @param  {String} date_string The string representation of the Date header that is going to be used
+ * @param  {String} dateString The string representation of the Date header that is going to be used
  * @return {String}             The string to sign for the Authorization header
  */
-Request.prototype.string_to_sign = function(date_string){
-  var string_to_sign = this.method + "\n"
-    + this.parsed_url.host + "\n"
-    + this.parsed_url.pathname + "\n"
-    + this.parsed_url.searchParams + "\n"
-    + date_string;
-  return string_to_sign;
+Request.prototype.stringToSign = function(dateString){
+  var stringToSign = this.method + "\n"
+    + this.parsedUrl.host + "\n"
+    + this.parsedUrl.pathname + "\n"
+    + this.parsedUrl.searchParams + "\n"
+    + dateString;
+  return stringToSign;
 }
 
 /**
- * Sign a string for the Authorization header, using the secret_key.
- * @param  {String} string_to_sign The string that is going to be hashed
+ * Sign a string for the Authorization header, using the secretKey.
+ * @param  {String} stringToSign The string that is going to be hashed
  * @return {String}                The resulting hash
  */
-Request.prototype.sign_string = function(string_to_sign){
-  var hash = crypto.createHmac('sha512', this.secret_key)
-                   .update(string_to_sign)
+Request.prototype.signString = function(stringToSign){
+  var hash = crypto.createHmac('sha512', this.secretKey)
+                   .update(stringToSign)
                    .digest('base64');
   return hash;
 }
 
-module.exports = {GetRequest: Request, PostRequest: PostRequest} 
+module.exports = Request

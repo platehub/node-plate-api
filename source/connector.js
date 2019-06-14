@@ -1,13 +1,13 @@
 Request = require("./request");
 
-function Connector(public_key, secret_key, server_base){
-  if(!public_key || !secret_key){
-    throw new Error('Missing public_key or secret_key');
+function Connector(publicKey, secretKey, serverBase){
+  if(!publicKey || !secretKey){
+    throw new Error('Missing publicKey or secretKey');
   }
 
-  this.public_key = public_key;
-  this.secret_key = secret_key;
-  this.server_base = server_base || "https://www.startwithplate.com/api/v2";
+  this.publicKey = publicKey;
+  this.secretKey = secretKey;
+  this.serverBase = serverBase || "https://www.startwithplate.com/api/v2";
 }
 
 /**
@@ -17,9 +17,9 @@ function Connector(public_key, secret_key, server_base){
  * @param  {Object} parameters   The parameters to send with the request
  * @return {Promise}             Promise for response object
  */
-Connector.prototype.send_request = function(method, path, parameters){
-  var full_url = this.server_base + path;
-  request = new Request(method, full_url, parameters, this);
+Connector.prototype.sendRequest = function(method, path, parameters){
+  var fullUrl = this.serverBase + path;
+  request = new Request(method, fullUrl, parameters, this);
   return request.execute();
 }
 

@@ -25,7 +25,7 @@ plate_api = new PlateApi("publickey", "secretkey")
 To make a request:
 
 ```javascript
-plate_api.send_request(
+plate_api.sendRequest(
   "POST",
   "/site_translations/471/posts",
   {
